@@ -1,0 +1,14 @@
+{
+    "name": "Beat Boxer",
+    "main": "./html/index.html",
+    "description": "Tag you MP3 with Beatport!",
+    "version": "0.0.1a test builds",
+    "window": {
+        "title": "Beat Boxer",
+        "toolbar": true,
+        "width": 1024,
+        "height": 625,
+        "min_width": 1024,
+        "min_height": 625
+  }
+}
