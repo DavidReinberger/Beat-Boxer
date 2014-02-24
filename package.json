@@ -2,6 +2,7 @@
     "name": "Beat Boxer",
     "main": "./html/index.html",
     "description": "Tag you MP3 with Beatport!",
+    "snapshot": "comp.bin",
     "version": "0.0.1a test builds",
     "window": {
         "title": "Beat Boxer",
