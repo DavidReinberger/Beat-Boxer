@@ -60,21 +60,91 @@ function searchBeatport (artist, title) {
                       beatportApiKey, beatportApiSecret,
                       "1.0A", undefined, "HMAC-SHA1");
     
-        
     var query = 'query=' + title + '&facets=artistName:' + artist,
         url   = 'https://oauth-api.beatport.com/catalog/3/search/?' + query;
     
     var request = oa.get(url, beatportAccessToken, beatportTokenSecret, function(error, data) {
         if (error) {
-            console.log(error);
+            alert(error);
         } else {
-            console.log(JSON.parse(data));
+            var bpdata = JSON.parse(data).results;
+            //console.log(bpdata);
+            createBeatportTable(bpdata);
         }
     });
-
 }
 
-
+function createBeatportTable (data) {
+    
+    var resultLength = data.length,
+        i            = 0;
+    console.log(data);
+    //parse bp metadata
+    while ( resultLength > i ) {
+        
+        //declare needed variables
+            track = {
+            Artist: '',
+            Title: '',
+            Label: '',
+            Genre: data[i].genres[0].name,
+            BPM: data[i].bpm,
+            Image: data[i].images.large.url,
+            Release: '',
+            Number: '',
+            };
+                
+        //parse artist
+        var artistLenght = data[i].artists.length,
+            a           = 0;
+            b           = 0;
+        
+        if (artistLenght > 0) {
+            while (artistLenght > a) {
+                if(data[i].artists[a].type == 'artist'){
+                    track.Artist += data[i].artists[a].name + ', ';
+                }
+                ++a;
+            }
+            
+            track.Artist = track.Artist.substr(0, track.Artist.length - 2);
+        }else{
+            track.Artist = data[i].artists[0].name;
+        }
+        
+        //parse title
+        if(data[i].title == undefined){
+            track.Title = data[i].name;
+        }else{
+            track.Title = data[i].title;
+        }
+        
+        //parse label
+        if(data[i].label == undefined){
+            track.Label = null;
+        }else{
+            track.Label = data[i].label.name;
+        }
+        
+        //parse release name
+        if(data[i].release == undefined){
+            track.Release = null;
+        }else{
+            track.Release = data[i].release.name;
+        }
+        
+        //parse Track Number
+        if(data[i].trackNumber == undefined){
+            track.Number = '1';
+        }else{
+            track.Number = data[i].TrackNumber;
+        }
+        
+        $("#beatport-table").append('<tr metas="' + track.artist + '|' + track.Title + '|' + track.Label + '|' + track.Genre + '|' + track.BPM + '|' + track.Release + '|' + track.Number + '"><td><div class="table-artwork"><img src="' + track.Image + '"/></div><div class="table-track-info"><strong>' + track.Title + '</strong><br>' + track.Artist + '</div></td></tr>');
+        
+        ++i;
+    }
+}
 
 // Converts an ArrayBuffer directly to base64, without any intermediate 'convert to string then
 // use window.btoa' step. According to my tests, this appears to be a faster approach:

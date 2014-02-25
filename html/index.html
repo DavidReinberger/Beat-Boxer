@@ -25,11 +25,29 @@
             <p id="info-track-genre"></p>
         </div>
         <div class="col-xs-4 right-panel">
-
+            <form class="bpform" onsubmit="callSearch()">
+                <input id="artist" type="text" placeholder="Track Artist">
+                <input id="title" type="text" placeholder="Track Title">
+                <button type="submit">Search</button>
+            </form>
+            <table class="table table-striped" id="beatport-table">
+                
+            </table>
         </div>
     
 </body>
 <script src="../js/jquery-2.1.0.js"></script>
 <script src="../js/static.js"></script>
 <script src="../js/functions.js"></script>
+<script>
+    function callSearch(){
+        event.preventDefault();
+         //see if there is already some track data - if is delete it
+        var resetTable = $( "#beatport-table" ).children();
+        $(resetTable).remove();
+        var artist = document.getElementById("artist").value,
+            title  = document.getElementById("title").value;
+        searchBeatport(artist, title);
+    }
+</script>
 </html>

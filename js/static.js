@@ -1,6 +1,6 @@
 $(window).resize(function() {
   // This will execute whenever the window is resized
-  var winHeight = $(window).height(); // New height
+  var winHeight = $(window).height() - 20; // New height
   $('body').css("height",winHeight);
   
 });
@@ -11,6 +11,7 @@ $(window).resize(function() {
 });
 
 $('#track-table').scrollLeft(300);
+$('#beatport-table').scrollLeft(300);
 
 window.ondragover = function(){DragAndDrop();};
 
@@ -24,7 +25,13 @@ $('#track-table').on('click', 'tr', function() {
         $( "#info-track-artist" ).html(meta[0]); //track artist
         $( "#info-track-album" ).html(meta[2]); //album name
         $( "#info-track-genre" ).html(meta[3]); //track genre
-        $( "#central-img" ).attr("src",meta[4]); //track cover
-
-    searchBeatport(meta[0], meta[1]);
+        $( "#central-img" ).attr("src",meta[4]);//track cover
+        $( "#artist" ).val(meta[0]);
+        $( "#title" ).val(meta[1]);
+        
+        //see if there is already some track data - if is delete it
+        var resetTable = $( "#beatport-table" ).children();
+        $(resetTable).remove();
+    
+        searchBeatport(meta[0], meta[1]);
 });
