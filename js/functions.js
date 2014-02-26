@@ -78,7 +78,7 @@ function createBeatportTable (data) {
     
     var resultLength = data.length,
         i            = 0;
-    console.log(data);
+
     //parse bp metadata
     while ( resultLength > i ) {
         
@@ -139,10 +139,45 @@ function createBeatportTable (data) {
             track.tNumber = data[i].TrackNumber;
         }
         
-        $("#beatport-table").append('<tr metas="' + track.Artist + '|' + track.Title + '|' + track.Label + '|' + track.Genre + '|' + track.BPM + '|' + track.Release + '|' + track.tNumber + '"><td><div class="table-artwork"><img src="' + track.Image + '"/></div><div class="table-track-info"><strong>' + track.Title + '</strong><br>' + track.Artist + '</div></td></tr>');
+        $("#beatport-table").append('<tr metas="' + track.Artist + '|' + track.Title + '|' + track.Label + '|' + track.Genre + '|' + track.BPM + '|' + track.Release + '|' + track.Image + '"><td><div class="table-artwork"><img src="' + track.Image + '"/></div><div class="table-track-info"><strong>' + track.Title + '</strong><br>' + track.Artist + '</div></td></tr>');
         
         ++i;
     }
+}
+
+function writeBeatportData(originalTrack ,data) {
+
+    var artist   = data[0],
+        title    = data[1],
+        label    = data[2],
+        genre    = data[3],
+        bpm      = data[4],
+        release  = data[5],
+        newCover = data[6];
+
+    var ffmetadata = require("ffmetadata"),
+    fs = require("fs");
+    
+    ffmetadata.write( originalTrack , newCover , {
+        artist: artist,
+        albumartist: artist,
+        title: title,
+        album: release,
+        BPM: bpm,
+        genre: genre,
+        label: label,
+    }, function(err) {
+        if (err) {
+            alert("Error writing metadata" + err);
+        }else{
+            alert("Data written");
+            
+            var resetTable = $( "#beatport-table" ).children();
+            $(resetTable).remove();
+            $(".active-track").remove();
+            $("#confirm-btn").attr("disabled", "disabled");
+        }
+    });
 }
 
 // Converts an ArrayBuffer directly to base64, without any intermediate 'convert to string then

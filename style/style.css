@@ -96,7 +96,8 @@ body {
 }
 
 .bpform {
-    max-width:100%;
+    position:fixed;
+    width:100%;
     height:46px;
     background:rgb(224, 224, 224);
 }
@@ -104,7 +105,7 @@ body {
 .bpform > input {
     padding:5px;
     margin:1px;
-    width: calc(50% - 39px);
+    width: calc(16% - 37px);
 }
 
 .bpform > button{
@@ -112,12 +113,17 @@ body {
 }
 
 #beatport-table {
-    position:sticky;
-    margin-top:10px;
+    margin-top:45px;
     max-height: 100%;
     overflow: auto;
 }
 
-#beatport-table > tr {
+#beatport-table tr {
     height:50px;
+    cursor:pointer;
+    word-break: break-word;
+}
+
+#beatport-table td:hover {
+    background-color: rgb(199, 199, 199);
 }

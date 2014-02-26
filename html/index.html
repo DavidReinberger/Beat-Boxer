@@ -23,6 +23,7 @@
             <p id="info-track-album"></p>
             <p><h4>Track Genre:</h4></p>
             <p id="info-track-genre"></p>
+            <button onclick="callWrite()" id="confirm-btn" type="button" class="btn btn-success" disabled="disabled">Apply</button>
         </div>
         <div class="col-xs-4 right-panel">
             <form class="bpform" onsubmit="callSearch()">
@@ -48,6 +49,15 @@
         var artist = document.getElementById("artist").value,
             title  = document.getElementById("title").value;
         searchBeatport(artist, title);
+    }
+    
+    function callWrite() {
+        //event.preventDefault();
+        var rawMeta = $(document.getElementsByClassName("selected-track")[0]).attr("metas"),
+            meta = rawMeta.split("|"),
+            originalPath = $(document.getElementsByClassName("active-track")[0]).attr("path");
+        
+        writeBeatportData(originalPath, meta);
     }
 </script>
 </html>

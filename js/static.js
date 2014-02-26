@@ -16,6 +16,10 @@ $('#beatport-table').scrollLeft(300);
 window.ondragover = function(){DragAndDrop();};
 
 $('#track-table').on('click', 'tr', function() {
+    
+    $("*").removeClass('active-track');
+    $(this).addClass('active-track');
+    
     //load data
     var path  = $(this).attr("path"),
         rawMeta = $(this).attr("metas"),
@@ -34,4 +38,12 @@ $('#track-table').on('click', 'tr', function() {
         $(resetTable).remove();
     
         searchBeatport(meta[0], meta[1]);
+});
+
+$('#beatport-table').on('click', 'tr', function() {
+
+    $("*").removeClass('selected-track');
+    $(this).addClass('selected-track');
+    $("#confirm-btn").removeAttr("disabled");
+
 });
