@@ -61,7 +61,7 @@ function searchBeatport (artist, title) {
                       "1.0A", undefined, "HMAC-SHA1");
     
     var query = 'query=' + title + '&facets=artistName:' + artist,
-        url   = 'https://oauth-api.beatport.com/catalog/3/search/?' + query;
+        url   = 'https://oauth-api.beatport.com/catalog/3/search/?' + query + '&perPage=20';
     
     var request = oa.get(url, beatportAccessToken, beatportTokenSecret, function(error, data) {
         if (error) {
@@ -91,7 +91,7 @@ function createBeatportTable (data) {
             BPM: data[i].bpm,
             Image: data[i].images.large.url,
             Release: '',
-            Number: '',
+            tNumber: '',
             };
                 
         //parse artist
@@ -105,8 +105,7 @@ function createBeatportTable (data) {
                     track.Artist += data[i].artists[a].name + ', ';
                 }
                 ++a;
-            }
-            
+            }   
             track.Artist = track.Artist.substr(0, track.Artist.length - 2);
         }else{
             track.Artist = data[i].artists[0].name;
@@ -135,12 +134,12 @@ function createBeatportTable (data) {
         
         //parse Track Number
         if(data[i].trackNumber == undefined){
-            track.Number = '1';
+            track.tNumber = '1';
         }else{
-            track.Number = data[i].TrackNumber;
+            track.tNumber = data[i].TrackNumber;
         }
         
-        $("#beatport-table").append('<tr metas="' + track.artist + '|' + track.Title + '|' + track.Label + '|' + track.Genre + '|' + track.BPM + '|' + track.Release + '|' + track.Number + '"><td><div class="table-artwork"><img src="' + track.Image + '"/></div><div class="table-track-info"><strong>' + track.Title + '</strong><br>' + track.Artist + '</div></td></tr>');
+        $("#beatport-table").append('<tr metas="' + track.Artist + '|' + track.Title + '|' + track.Label + '|' + track.Genre + '|' + track.BPM + '|' + track.Release + '|' + track.tNumber + '"><td><div class="table-artwork"><img src="' + track.Image + '"/></div><div class="table-track-info"><strong>' + track.Title + '</strong><br>' + track.Artist + '</div></td></tr>');
         
         ++i;
     }

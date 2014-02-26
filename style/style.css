@@ -114,11 +114,10 @@ body {
 #beatport-table {
     position:sticky;
     margin-top:10px;
-    min-height: 554px;
     max-height: 100%;
     overflow: auto;
 }
 
-#beatport-table td {
-    height:80px;
+#beatport-table > tr {
+    height:50px;
 }
