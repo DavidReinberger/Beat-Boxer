@@ -64,8 +64,9 @@ function searchBeatport (artist, title) {
         url   = 'https://oauth-api.beatport.com/catalog/3/search/?' + query + '&perPage=20';
     
     var request = oa.get(url, beatportAccessToken, beatportTokenSecret, function(error, data) {
+        
         if (error) {
-            alert(error);
+            alert(error.statusCode + ' the search is too long, please simplify it');
         } else {
             var bpdata = JSON.parse(data).results;
             //console.log(bpdata);

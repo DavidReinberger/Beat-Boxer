@@ -124,6 +124,10 @@ body {
     word-break: break-word;
 }
 
-#beatport-table td:hover {
-    background-color: rgb(199, 199, 199);
+.active-track > td {
+    background-color: rgb(199, 199, 199) !important;
+}
+
+.selected-track > td {
+    background-color: rgb(199, 199, 199) !important;
 }
