@@ -34,21 +34,21 @@ function CreateTrackTable (data, length) {
         var mimeType = data.dataTransfer.files[i].type;
         
         if (mimeType == "audio/mp3" || mimeType == "audio/x-m4a"){
-        
-            var FilePath = data.dataTransfer.files[i].path,
-                parser   = mm(fs.createReadStream(FilePath));
-    
-            parser.on('metadata', function (result) {
-                    
-                if (result.picture.length == 0) {
-                    $("#track-table").append('<tr path="' + FilePath + '" metas="' + result.artist + '|' + result.title + '|' + result.album + '|' + result.genre + '|"><td><div class="table-artwork"><span class="glyphicon glyphicon-music"></span></div><div class="table-track-info"><strong>' + result.title + '</strong><br>' + result.artist + '</div></td></tr>');
-                }else{
-                    var picture = base64ArrayBuffer(result.picture[0].data);
-                    $("#track-table").append('<tr path="' + FilePath + '" metas="' + result.artist + '|' + result.title + '|' + result.album + '|' + result.genre + '|' + 'data: image/' + result.picture[0].format + '; base64, ' + picture + '"><td><div class="table-artwork"><img src="data: image/' + result.picture[0].format + '; base64, ' + picture +'"/></div><div class="table-track-info"><strong>' + result.title + '</strong><br>' + result.artist + '</div></td></tr>');     
-                }
-            });
+            
+            var FilePath = data.dataTransfer.files[i].path;
+            var parser = mm(fs.createReadStream(FilePath));
+            (function(FilePath) {
+                parser.on('metadata',  function (result) {
+                    if (result.picture.length == 0) {
+                        $("#track-table").append('<tr path="'+ FilePath +'" metas="' + result.artist + '|' + result.title + '|' + result.album + '|' + result.genre + '|"><td><div class="table-artwork"><span class="glyphicon glyphicon-music"></span></div><div class="table-track-info"><strong>' + result.title + '</strong><br>' + result.artist + '</div></td></tr>');
+                    }else{
+                        var picture = base64ArrayBuffer(result.picture[0].data);
+                        $("#track-table").append('<tr path="'+ FilePath +'" metas="' + result.artist + '|' + result.title + '|' + result.album + '|' + result.genre + '|' + 'data: image/' + result.picture[0].format + '; base64, ' + picture + '"><td><div class="table-artwork"><img src="data: image/' + result.picture[0].format + '; base64, ' + picture +'"/></div><div class="table-track-info"><strong>' + result.title + '</strong><br>' + result.artist + '</div></td></tr>');     
+                    }
+                });
+            })(FilePath);
         }
-    }
+    } 
 }
 
 function searchBeatport (artist, title) {
@@ -98,17 +98,22 @@ function createBeatportTable (data) {
         var artistLenght = data[i].artists.length,
             a           = 0;
             b           = 0;
+        console.log(data);
         
-        if (artistLenght > 0) {
-            while (artistLenght > a) {
-                if(data[i].artists[a].type == 'artist'){
-                    track.Artist += data[i].artists[a].name + ', ';
+        //fix a bug where no artist is defined and the app crashes
+        var Type = typeof data[i].artists[0];
+        if (Type == 'object'){
+            if (artistLenght > 0) {
+                while (artistLenght > a) {
+                    if(data[i].artists[a].type == 'artist'){
+                        track.Artist += data[i].artists[a].name + ', ';
+                    }
+                    ++a;
                 }
-                ++a;
-            }   
-            track.Artist = track.Artist.substr(0, track.Artist.length - 2);
-        }else{
-            track.Artist = data[i].artists[0].name;
+                track.Artist = track.Artist.substr(0, track.Artist.length - 2);
+            }else{
+                track.Artist = data[i].artists[0].name;
+            }
         }
         
         //parse title
